@@ -1,3 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillTwin Build Roadmap</title>
+
+<!-- Firebase (free tier, real-time shared storage) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+  // ↓↓↓ PASTE YOUR FIREBASE CONFIG HERE (see setup steps below) ↓↓↓
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -514,6 +537,7 @@
   }
 
   function onToggle(e){
+    if(applyingRemoteUpdate) return;
     const id = e.target.dataset.id;
     if(e.target.checked) done.add(id); else done.delete(id);
     updateProgress();
@@ -525,23 +549,39 @@
     saveTimer = setTimeout(saveProgress, 350);
   }
 
+  const db = firebase.firestore();
+  const docRef = db.collection('skilltwin').doc('roadmap_progress');
+  let applyingRemoteUpdate = false;
+
   async function saveProgress(){
     try{
-      await window.storage.set('skilltwin_roadmap_progress', JSON.stringify({done: Array.from(done)}), true);
+      await docRef.set({ done: Array.from(done) });
     }catch(err){ console.error('Save failed', err); }
   }
 
   async function loadProgress(){
     try{
-      const res = await window.storage.get('skilltwin_roadmap_progress', true);
-      if(res && res.value){
-        const parsed = JSON.parse(res.value);
-        done = new Set(parsed.done || []);
+      const snap = await docRef.get();
+      if(snap.exists){
+        done = new Set(snap.data().done || []);
       }
     }catch(err){
-      // no existing key yet — start fresh
+      console.error('Load failed', err);
       done = new Set();
     }
+  }
+
+  function listenForRemoteChanges(){
+    docRef.onSnapshot((snap)=>{
+      if(!snap.exists) return;
+      const remoteDone = new Set(snap.data().done || []);
+      const same = remoteDone.size === done.size && [...remoteDone].every(id=>done.has(id));
+      if(same) return;
+      applyingRemoteUpdate = true;
+      done = remoteDone;
+      renderAll();
+      applyingRemoteUpdate = false;
+    });
   }
 
   function renderAll(){
@@ -567,7 +607,11 @@
   (async function init(){
     await loadProgress();
     renderAll();
+    listenForRemoteChanges();
     document.getElementById('loadingVeil').style.display = 'none';
   })();
 })();
 </script>
+
+</body>
+</html>
