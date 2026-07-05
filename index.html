@@ -1,0 +1,573 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A1424;
+    --bg-2:#0D1B30;
+    --panel:#0F2038;
+    --panel-2:#0C1A2E;
+    --line:rgba(255,255,255,0.07);
+    --line-2:rgba(255,255,255,0.13);
+    --navy:#12294B;
+    --teal:#14A398;
+    --teal-dim:#0E8C82;
+    --teal-soft:rgba(20,163,152,0.13);
+    --orange:#F2994A;
+    --orange-soft:rgba(242,153,74,0.14);
+    --text:#EBF1F8;
+    --text-dim:#8FA3BE;
+    --text-faint:#4E617C;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  div,section,header,footer,p,h1,h2,h3,span,button,label,input{margin:0;padding:0;}
+  body{background:transparent;}
+  .stw-root{
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(circle at 18% 8%, rgba(20,163,152,0.10), transparent 42%),
+      radial-gradient(circle at 85% 6%, rgba(242,153,74,0.08), transparent 38%),
+      var(--bg);
+    color:var(--text);
+    padding:36px 28px 56px;
+    border-radius:20px;
+    max-width:1040px;
+    margin:0 auto;
+    position:relative;
+    overflow:hidden;
+  }
+  .stw-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    justify-content:center;
+  }
+  .stw-eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);}
+
+  /* ---------- Header / Radar ---------- */
+  .stw-header{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding-bottom:30px;
+    margin-bottom:32px;
+    border-bottom:1px solid var(--line);
+  }
+  .radar-wrap{width:132px;height:132px;position:relative;margin-bottom:6px;}
+  .radar-wrap svg{width:100%;height:100%;}
+  .radar-sweep{
+    position:absolute;inset:0;
+    border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(20,163,152,0.55), transparent 26%);
+    -webkit-mask:radial-gradient(circle, transparent 30%, black 31%);
+    mask:radial-gradient(circle, transparent 30%, black 31%);
+    animation:spin 5s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .blip{
+    position:absolute;
+    width:20px;height:20px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;font-weight:600;
+    animation:orbit 14s linear infinite;
+  }
+  .blip.k{background:var(--teal);color:#04211d;box-shadow:0 0 14px rgba(20,163,152,.7);
+    top:50%;left:50%;margin:-10px 0 0 -10px;
+    transform-origin: 66px 10px;
+    animation-name:orbitK;}
+  .blip.a{background:var(--orange);color:#3a1e02;box-shadow:0 0 14px rgba(242,153,74,.7);
+    top:50%;left:50%;margin:-10px 0 0 -10px;
+    transform-origin: 66px 10px;
+    animation-name:orbitA; animation-duration:14s;}
+  @keyframes orbitK{from{transform:rotate(20deg) translateX(46px) rotate(-20deg);}to{transform:rotate(380deg) translateX(46px) rotate(-380deg);}}
+  @keyframes orbitA{from{transform:rotate(200deg) translateX(46px) rotate(-200deg);}to{transform:rotate(560deg) translateX(46px) rotate(-560deg);}}
+  .core{
+    position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px 0 0 -22px;
+    border-radius:50%;
+    background:linear-gradient(145deg,#16324f,#0b1a2d);
+    border:1px solid rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--text);
+    box-shadow:0 0 26px rgba(20,163,152,.22);
+  }
+  .ring-static{position:absolute;inset:0;border-radius:50%;border:1px solid var(--line-2);}
+  .ring-static.r2{inset:18px;}
+  .ring-static.r3{inset:36px;}
+
+  h1.stw-title{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:29px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-top:14px;
+  }
+  .stw-sub{
+    color:var(--text-dim);
+    font-size:14.5px;
+    margin-top:6px;
+  }
+  .stw-sub b{color:var(--text);font-weight:600;}
+
+  .overall-bar-wrap{width:100%;max-width:380px;margin-top:20px;}
+  .overall-bar-track{
+    height:6px;border-radius:4px;background:rgba(255,255,255,0.08);overflow:hidden;
+  }
+  .overall-bar-fill{
+    height:100%;border-radius:4px;
+    background:linear-gradient(90deg,var(--teal),var(--orange));
+    width:0%;
+    transition:width .5s ease;
+  }
+  .overall-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;color:var(--text-faint);
+    margin-top:8px;letter-spacing:.03em;
+  }
+
+  /* ---------- Track cards ---------- */
+  .tracks{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+  @media (max-width:760px){.tracks{grid-template-columns:1fr;}}
+
+  .track-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 22px 8px;
+    position:relative;
+  }
+  .track-card.karthika{border-top:2px solid var(--teal);}
+  .track-card.arun{border-top:2px solid var(--orange);}
+
+  .track-head{display:flex;align-items:center;gap:14px;margin-bottom:4px;}
+  .avatar{
+    width:38px;height:38px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;
+    flex-shrink:0;
+  }
+  .avatar.k{background:var(--teal-soft);color:var(--teal);}
+  .avatar.a{background:var(--orange-soft);color:var(--orange);}
+
+  .track-name{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;}
+  .track-role{font-size:12.5px;color:var(--text-dim);margin-top:1px;}
+
+  .ring-mini{width:46px;height:46px;margin-left:auto;position:relative;flex-shrink:0;}
+  .ring-mini svg{transform:rotate(-90deg);width:46px;height:46px;}
+  .ring-mini .pct{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;color:var(--text);
+  }
+
+  .track-focus{
+    font-size:13px;color:var(--text-dim);
+    line-height:1.55;
+    margin:14px 0 18px;
+    padding-bottom:16px;
+    border-bottom:1px dashed var(--line-2);
+  }
+
+  .cat{margin-bottom:6px;}
+  .cat-head{
+    display:flex;align-items:baseline;gap:8px;
+    padding:12px 0 8px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .cat-title{font-size:13.5px;font-weight:600;color:var(--text);}
+  .cat-phase{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;color:var(--text-faint);
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--line);
+    padding:2px 7px;border-radius:20px;
+    white-space:nowrap;
+  }
+  .cat-count{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);
+    margin-left:auto;
+  }
+  .cat-chevron{color:var(--text-faint);font-size:11px;transition:transform .2s;}
+  .cat.collapsed .cat-chevron{transform:rotate(-90deg);}
+  .cat-tasks{overflow:hidden;}
+  .cat.collapsed .cat-tasks{display:none;}
+
+  .task{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:7px 2px;
+    border-radius:8px;
+  }
+  .task label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;width:100%;}
+  .task input[type=checkbox]{
+    appearance:none;-webkit-appearance:none;
+    width:17px;height:17px;flex-shrink:0;margin-top:2px;
+    border:1.5px solid var(--text-faint);
+    border-radius:5px;
+    position:relative;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .track-card.karthika .task input:checked{background:var(--teal);border-color:var(--teal);}
+  .track-card.arun .task input:checked{background:var(--orange);border-color:var(--orange);}
+  .task input:checked::after{
+    content:"";position:absolute;left:4.5px;top:1px;width:5px;height:9px;
+    border:solid #06140f;border-width:0 2px 2px 0;transform:rotate(40deg);
+  }
+  .task input:focus-visible{outline:2px solid var(--text);outline-offset:2px;}
+  .task-text{font-size:13.3px;line-height:1.5;color:var(--text-dim);transition:.15s;}
+  .task input:checked ~ .task-text{color:var(--text-faint);text-decoration:line-through;text-decoration-color:var(--text-faint);}
+
+  /* ---------- Shared section ---------- */
+  .shared-card{
+    margin-top:22px;
+    background:linear-gradient(180deg, rgba(20,163,152,0.06), rgba(242,153,74,0.05));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 24px 20px;
+  }
+  .shared-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .shared-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;}
+  .shared-sub{font-size:12.5px;color:var(--text-dim);margin-bottom:14px;}
+  .shared-tasks{display:grid;grid-template-columns:1fr 1fr;gap:2px 24px;}
+  @media (max-width:760px){.shared-tasks{grid-template-columns:1fr;}}
+  .shared-card .task input:checked{background:var(--text-dim);border-color:var(--text-dim);}
+  .shared-card .task input:checked::after{border-color:#0A1424;}
+
+  /* ---------- Footer ---------- */
+  .stw-footer{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:26px;flex-wrap:wrap;gap:10px;
+  }
+  .footer-note{font-size:11.5px;color:var(--text-faint);max-width:420px;line-height:1.5;}
+  .reset-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--text-dim);
+    background:transparent;border:1px solid var(--line-2);
+    padding:7px 13px;border-radius:20px;cursor:pointer;
+    transition:.15s;
+  }
+  .reset-btn:hover{border-color:var(--text-dim);color:var(--text);}
+  .reset-confirm{display:none;align-items:center;gap:8px;}
+  .reset-confirm.show{display:flex;}
+  .reset-yes{color:var(--orange);border-color:var(--orange);}
+
+  .loading-veil{
+    position:absolute;inset:0;background:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);
+    letter-spacing:.08em;text-transform:uppercase;
+    z-index:5;border-radius:20px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .radar-sweep, .blip{animation:none !important;}
+  }
+</style>
+
+<div class="stw-root" id="stwRoot">
+  <div class="loading-veil" id="loadingVeil">Loading progress…</div>
+
+  <div class="stw-eyebrow"><span class="dot"></span>SAMSUNG SOLVE FOR TOMORROW 2026</div>
+
+  <div class="stw-header">
+    <div class="radar-wrap">
+      <div class="ring-static"></div>
+      <div class="ring-static r2"></div>
+      <div class="ring-static r3"></div>
+      <div class="radar-sweep"></div>
+      <div class="blip k">K</div>
+      <div class="blip a">A</div>
+      <div class="core">ST</div>
+    </div>
+    <h1 class="stw-title">SkillTwin Build Roadmap</h1>
+    <p class="stw-sub"><b>Karthika</b> × <b>Arun</b> — two tracks, one engine</p>
+    <div class="overall-bar-wrap">
+      <div class="overall-bar-track"><div class="overall-bar-fill" id="overallFill"></div></div>
+      <div class="overall-label" id="overallLabel">0 / 46 TASKS COMPLETE</div>
+    </div>
+  </div>
+
+  <div class="tracks">
+    <div class="track-card karthika" id="cardK">
+      <div class="track-head">
+        <div class="avatar k">K</div>
+        <div>
+          <div class="track-name">Karthika</div>
+          <div class="track-role">AI/ML Engine + Frontend</div>
+        </div>
+        <div class="ring-mini" id="ringK">
+          <svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="19" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/><circle cx="23" cy="23" r="19" fill="none" stroke="#14A398" stroke-width="4" stroke-linecap="round" id="ringKFill" stroke-dasharray="119.4" stroke-dashoffset="119.4"/></svg>
+          <div class="pct" id="pctK">0%</div>
+        </div>
+      </div>
+      <p class="track-focus">Owns the Decay Prediction Engine, the Adaptive Micro-Challenge Generator, and everything the user actually sees — the passport, dashboard, and recruiter portal.</p>
+      <div id="catsK"></div>
+    </div>
+
+    <div class="track-card arun" id="cardA">
+      <div class="track-head">
+        <div class="avatar a">A</div>
+        <div>
+          <div class="track-name">Arun</div>
+          <div class="track-role">Backend + Database + Deployment</div>
+        </div>
+        <div class="ring-mini" id="ringA">
+          <svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="19" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/><circle cx="23" cy="23" r="19" fill="none" stroke="#F2994A" stroke-width="4" stroke-linecap="round" id="ringAFill" stroke-dasharray="119.4" stroke-dashoffset="119.4"/></svg>
+          <div class="pct" id="pctA">0%</div>
+        </div>
+      </div>
+      <p class="track-focus">Owns the API, the database, authentication, and getting the whole thing live — the spine SkillTwin's AI and UI both stand on.</p>
+      <div id="catsA"></div>
+    </div>
+  </div>
+
+  <div class="shared-card">
+    <div class="shared-head">
+      <div class="shared-title">Together</div>
+    </div>
+    <p class="shared-sub">Six things that only work if you do them side by side, not in parallel.</p>
+    <div class="shared-tasks" id="catsShared"></div>
+  </div>
+
+  <div class="stw-footer">
+    <div class="footer-note" id="footerNote">Checking a box saves instantly and is shared between you and Arun — anyone with this artifact open sees the same progress.</div>
+    <div>
+      <button class="reset-btn" id="resetBtn">Reset progress</button>
+      <span class="reset-confirm" id="resetConfirm">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">Clear everything?</span>
+        <button class="reset-btn reset-yes" id="resetYes">Yes, reset</button>
+        <button class="reset-btn" id="resetNo">Cancel</button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const DATA = {
+    k: [
+      {id:'fnd', title:'Foundations for the Build', phase:'Ph 1–2', tasks:[
+        {id:'k1', text:'JavaScript ES6+ refresher — arrow functions, async/await, destructuring'},
+        {id:'k2', text:'React fundamentals — components, props, state, hooks'},
+        {id:'k3', text:'Next.js basics — file-based routing, layouts'},
+        {id:'k4', text:'Figma wireframes for Passport, Dashboard & Recruiter Portal screens'},
+      ]},
+      {id:'ai', title:'AI/ML Core — Decay Engine', phase:'Ph 3', tasks:[
+        {id:'k5', text:'NumPy & Pandas for behavioural event data'},
+        {id:'k6', text:'Bayesian Knowledge Tracing (BKT) — the mastery-update formula'},
+        {id:'k7', text:'Forgetting-curve math — the decay model behind the Skill Decay Curve'},
+        {id:'k8', text:'Item Response Theory (IRT) basics — calibrating challenge difficulty'},
+        {id:'k9', text:'LLM API + prompt engineering — Adaptive Micro-Challenge Generator'},
+        {id:'k10', text:'Skill Relationship Graph — prerequisite graph + traversal logic'},
+      ]},
+      {id:'fe', title:'Frontend & Product Experience', phase:'Ph 2 & 4', tasks:[
+        {id:'k11', text:'Tailwind CSS fundamentals'},
+        {id:'k12', text:'shadcn/ui component library setup'},
+        {id:'k13', text:'Build the Dynamic Skill Passport page (retention %, confidence, readiness)'},
+        {id:'k14', text:'Build Student Dashboard — skills list + decay-curve charts (Recharts)'},
+        {id:'k15', text:'Recruiter Verification Portal UI — search + verify a passport'},
+        {id:'k16', text:'Framer Motion micro-interactions — pulses, hover states, reveals'},
+        {id:'k17', text:'Loading states & skeleton UI'},
+      ]},
+      {id:'sec', title:'Security & Polish', phase:'Ph 4', tasks:[
+        {id:'k18', text:'Review auth flows for frontend vulnerabilities (XSS, exposed keys)'},
+        {id:'k19', text:'Accessibility pass — contrast, keyboard nav, alt text'},
+        {id:'k20', text:'Responsive pass — test on mobile widths'},
+      ]},
+    ],
+    a: [
+      {id:'fnd', title:'Foundations for the Build', phase:'Ph 1–2', tasks:[
+        {id:'a1', text:'How the Internet Works — HTTP/HTTPS, DNS, client vs server'},
+        {id:'a2', text:'REST API concepts — resources, verbs, status codes'},
+        {id:'a3', text:'Python OOP deep-dive — classes, inheritance, beyond your current level'},
+        {id:'a4', text:'SQL refresher — joins, indexes, constraints'},
+      ]},
+      {id:'be', title:'Backend Core', phase:'Ph 2', tasks:[
+        {id:'a5', text:'FastAPI basics — routing, request/response models with Pydantic'},
+        {id:'a6', text:'REST endpoints for Users, Skills, Attempts, Challenges'},
+        {id:'a7', text:'JWT authentication — issuing & verifying tokens'},
+        {id:'a8', text:'Role-based authorization — student / faculty / recruiter / admin'},
+        {id:'a9', text:'Password hashing (bcrypt)'},
+        {id:'a10', text:'Passive Skill Radar endpoints — logging attempts, time-on-task, revisions'},
+      ]},
+      {id:'db', title:'Database', phase:'Ph 2–3', tasks:[
+        {id:'a11', text:'PostgreSQL setup + connect from FastAPI'},
+        {id:'a12', text:'Schema design — Users, Skills, Attempts, Passports, Challenges'},
+        {id:'a13', text:'SQLModel / SQLAlchemy ORM basics'},
+        {id:'a14', text:"Queries that feed Karthika's BKT module with clean event data"},
+        {id:'a15', text:'Basic indexing on frequently-queried tables'},
+      ]},
+      {id:'dep', title:'Deployment & Security', phase:'Ph 4–6', tasks:[
+        {id:'a16', text:'Environment variables & secrets management'},
+        {id:'a17', text:'Deploy backend + Postgres on Railway/Render'},
+        {id:'a18', text:'Connect deployed backend to the Vercel-hosted frontend'},
+        {id:'a19', text:'SQL-injection prevention — parameterized queries / ORM safety'},
+        {id:'a20', text:'Basic rate limiting on auth endpoints'},
+      ]},
+    ],
+    s: [
+      {id:'s1', text:'Git & GitHub workflow — branches, PRs, resolving conflicts'},
+      {id:'s2', text:'Agree on the API contract together before either of you builds against it'},
+      {id:'s3', text:'Map the 3 user flows — student, faculty, recruiter — before coding'},
+      {id:'s4', text:'Weekly Figma review before a new screen gets built'},
+      {id:'s5', text:'Integration pass — does the Passport page render live API data correctly?'},
+      {id:'s6', text:"Demo script + rehearsal, aligned with the pitch document's narrative"},
+    ]
+  };
+
+  const ALL_IDS = [
+    ...DATA.k.flatMap(c=>c.tasks.map(t=>t.id)),
+    ...DATA.a.flatMap(c=>c.tasks.map(t=>t.id)),
+    ...DATA.s.map(t=>t.id),
+  ];
+  const TOTAL = ALL_IDS.length;
+
+  let done = new Set();
+  let saveTimer = null;
+
+  function renderTrack(containerEl, categories, personLetter){
+    containerEl.innerHTML = '';
+    categories.forEach(cat=>{
+      const catEl = document.createElement('div');
+      catEl.className = 'cat';
+      const doneCount = cat.tasks.filter(t=>done.has(t.id)).length;
+      catEl.innerHTML = `
+        <div class="cat-head">
+          <span class="cat-chevron">▾</span>
+          <span class="cat-title">${cat.title}</span>
+          <span class="cat-phase">${cat.phase}</span>
+          <span class="cat-count">${doneCount}/${cat.tasks.length}</span>
+        </div>
+        <div class="cat-tasks">
+          ${cat.tasks.map(t=>`
+            <div class="task">
+              <label>
+                <input type="checkbox" data-id="${t.id}" ${done.has(t.id)?'checked':''}/>
+                <span class="task-text">${t.text}</span>
+              </label>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      catEl.querySelector('.cat-head').addEventListener('click', ()=>{
+        catEl.classList.toggle('collapsed');
+      });
+      containerEl.appendChild(catEl);
+    });
+    containerEl.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      cb.addEventListener('change', onToggle);
+    });
+  }
+
+  function renderShared(){
+    const el = document.getElementById('catsShared');
+    el.innerHTML = DATA.s.map(t=>`
+      <div class="task">
+        <label>
+          <input type="checkbox" data-id="${t.id}" ${done.has(t.id)?'checked':''}/>
+          <span class="task-text">${t.text}</span>
+        </label>
+      </div>
+    `).join('');
+    el.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      cb.addEventListener('change', onToggle);
+    });
+  }
+
+  function setRing(fillEl, pctEl, pct){
+    const c = 2*Math.PI*19;
+    fillEl.setAttribute('stroke-dasharray', c.toFixed(1));
+    fillEl.setAttribute('stroke-dashoffset', (c*(1-pct/100)).toFixed(1));
+    pctEl.textContent = Math.round(pct)+'%';
+  }
+
+  function updateProgress(){
+    const kIds = DATA.k.flatMap(c=>c.tasks.map(t=>t.id));
+    const aIds = DATA.a.flatMap(c=>c.tasks.map(t=>t.id));
+    const kDone = kIds.filter(id=>done.has(id)).length;
+    const aDone = aIds.filter(id=>done.has(id)).length;
+    setRing(document.getElementById('ringKFill'), document.getElementById('pctK'), kDone/kIds.length*100);
+    setRing(document.getElementById('ringAFill'), document.getElementById('pctA'), aDone/aIds.length*100);
+
+    const totalDone = ALL_IDS.filter(id=>done.has(id)).length;
+    document.getElementById('overallFill').style.width = (totalDone/TOTAL*100).toFixed(1)+'%';
+    document.getElementById('overallLabel').textContent = `${totalDone} / ${TOTAL} TASKS COMPLETE`;
+
+    // refresh category counts without full re-render (avoid collapsing state loss)
+    document.querySelectorAll('.cat').forEach((catEl)=>{
+      const ids = Array.from(catEl.querySelectorAll('input[type=checkbox]')).map(cb=>cb.dataset.id);
+      const d = ids.filter(id=>done.has(id)).length;
+      const countEl = catEl.querySelector('.cat-count');
+      if(countEl) countEl.textContent = `${d}/${ids.length}`;
+    });
+  }
+
+  function onToggle(e){
+    const id = e.target.dataset.id;
+    if(e.target.checked) done.add(id); else done.delete(id);
+    updateProgress();
+    scheduleSave();
+  }
+
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveProgress, 350);
+  }
+
+  async function saveProgress(){
+    try{
+      await window.storage.set('skilltwin_roadmap_progress', JSON.stringify({done: Array.from(done)}), true);
+    }catch(err){ console.error('Save failed', err); }
+  }
+
+  async function loadProgress(){
+    try{
+      const res = await window.storage.get('skilltwin_roadmap_progress', true);
+      if(res && res.value){
+        const parsed = JSON.parse(res.value);
+        done = new Set(parsed.done || []);
+      }
+    }catch(err){
+      // no existing key yet — start fresh
+      done = new Set();
+    }
+  }
+
+  function renderAll(){
+    renderTrack(document.getElementById('catsK'), DATA.k, 'k');
+    renderTrack(document.getElementById('catsA'), DATA.a, 'a');
+    renderShared();
+    updateProgress();
+  }
+
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    document.getElementById('resetConfirm').classList.add('show');
+  });
+  document.getElementById('resetNo').addEventListener('click', ()=>{
+    document.getElementById('resetConfirm').classList.remove('show');
+  });
+  document.getElementById('resetYes').addEventListener('click', async ()=>{
+    done = new Set();
+    renderAll();
+    await saveProgress();
+    document.getElementById('resetConfirm').classList.remove('show');
+  });
+
+  (async function init(){
+    await loadProgress();
+    renderAll();
+    document.getElementById('loadingVeil').style.display = 'none';
+  })();
+})();
+</script>
